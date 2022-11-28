@@ -20,32 +20,21 @@ public class User{
     private String password;
     @Transient
     private String passwordConfirm;
-    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE,
-                    CascadeType.REFRESH, CascadeType.PERSIST})
-    @JoinTable(
-            name="user_role",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id")
-    )
-    private List<Role> roles;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private Role role;
 
     public User() {
     }
 
-    public User(String login, String password, String passwordConfirm, List<Role> roles) {
+    public User(String login, String password, String passwordConfirm, Role role) {
         if (passwordConfirm.equals(password)) {
             this.login = login;
             this.password = password;
             this.passwordConfirm = passwordConfirm;
-            this.roles = roles;
+            this.role = role;
         }
-    }
-
-    public void addRoleToUser(Role role) {
-        if (roles == null) {
-            roles = new ArrayList<>();
-        }
-        roles.add(role);
     }
 
     public Long getId() {
@@ -81,12 +70,12 @@ public class User{
         this.passwordConfirm = passwordConfirm;
     }
 
-    public List<Role> getRoles() {
-        return roles;
+    public Role getRole() {
+        return role;
     }
 
-    public void setRoles(List<Role> roles) {
-        this.roles = roles;
+    public void setRoles(Role role) {
+        this.role = role;
     }
 
     @Override
@@ -94,12 +83,12 @@ public class User{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(id, user.id) && Objects.equals(login, user.login) && Objects.equals(password, user.password) && Objects.equals(passwordConfirm, user.passwordConfirm) && Objects.equals(roles, user.roles);
+        return Objects.equals(id, user.id) && Objects.equals(login, user.login) && Objects.equals(password, user.password) && Objects.equals(passwordConfirm, user.passwordConfirm) && Objects.equals(role, user.role);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, login, password, passwordConfirm, roles);
+        return Objects.hash(id, login, password, passwordConfirm, role);
     }
 }
 
