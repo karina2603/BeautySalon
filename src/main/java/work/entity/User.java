@@ -25,6 +25,9 @@ public class User{
     @JoinColumn(name = "user_id")
     private Role role;
 
+    @Column(name = "enabled")
+    private int enabled;
+
     public User() {
     }
 
@@ -34,7 +37,20 @@ public class User{
             this.password = password;
             this.passwordConfirm = passwordConfirm;
             this.role = role;
+            this.enabled = 1;
         }
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public int getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(int enabled) {
+        this.enabled = enabled;
     }
 
     public Long getId() {
@@ -72,10 +88,6 @@ public class User{
 
     public Role getRole() {
         return role;
-    }
-
-    public void setRoles(Role role) {
-        this.role = role;
     }
 
     @Override
